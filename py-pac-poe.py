@@ -4,14 +4,15 @@ def main():
     move_count = 0
     winner = 0
     init()
-    while winner == 0:
-        turn_order(winner, move_count, turn)
+    while winner == 0 and move_count != 9:
+        turn_order(turn)
         player_move = get_move()
         if check_move(board, player_move, turn):
             turn *= -1
             move_count += 1
-            check_winner(board, turn, move_count, winner)
+            winner = check_winner(board, winner)
             render_board(board)
+        print_winner(winner, move_count)
 
 
 def init():
@@ -31,17 +32,22 @@ def render_board(board):
     print(row3)
 
 
-def turn_order(winner, move_count, turn):
+def turn_order(turn):
     player1 = "X"
     player2 = "O"
-    if winner == 0 and move_count == 9:
-        print(f"Sorry No One Wins - CAT Game")
-    elif winner:
-        print(f"Congrats! {winner} has won")
-    elif turn == 1:
+    if turn == 1:
         print(f"It is {player1}'s turn\n")
     else:
         print(f"It is {player2}'s turn\n")
+
+
+def print_winner(winner, move_count):
+    if winner == 0 and move_count == 9:
+        print(f"Sorry No One Wins - CAT Game")
+    elif winner == 1:
+        print(f"Congrats! X has won")
+    elif winner == -1:
+        print(f"Congrats! O has won")
 
 
 def get_move():
@@ -92,18 +98,7 @@ def check_move(board, move, turn):
         return False
 
 
-# go through board list, check for a1 = index 0, a2 = index1 ...
-# def check_move(board, move, turn):
-#     if board[move] != "X" or board[move] != "O":
-#         if turn == 1:
-#             board[move] = "X"
-#         else:
-#             board[move] = "O"
-#     else:
-#         print("Please enter a different move: ")
-
-
-def check_winner(board, turn, move_count, winner):
+def check_winner(board, winner):
     win_conditions = [
         [0, 1, 2],
         [3, 4, 5],
@@ -115,15 +110,18 @@ def check_winner(board, turn, move_count, winner):
         [2, 4, 6],
     ]
     for condition in win_conditions:
-        total = 0
-        check_list = [win_conditions[condition]]
-        if turn == 1:
-            for idx in check_list:
-                if board[idx] == "X":
-                    total += 1
-                if total == 3:
-                    winner == 1
-                    return winner
+        total_x = 0
+        total_o = 0
+        for idx in condition:
+            if board[idx] == "X":
+                total_x += 1
+                if total_x == 3:
+                    winner = 1
+            elif board[idx] == "O":
+                total_o += 1
+                if total_o == 3:
+                    winner = -1
+    return winner
 
 
 main()
