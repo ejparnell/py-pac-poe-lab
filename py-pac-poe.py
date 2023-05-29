@@ -11,6 +11,7 @@ def main():
             turn *= -1
             move_count += 1
             winner = check_winner(board, winner)
+            print("\033c")
             render_board(board)
         print_winner(winner, move_count)
 
@@ -22,13 +23,16 @@ def init():
 
 
 def render_board(board):
-    column_list = f"\n    A     B     C"
-    row1 = f"1)  {board[0]}  |  {board[1]}  |  {board[2]}"
-    row2 = f"2)  {board[3]}  |  {board[4]}  |  {board[5]}"
-    row3 = f"3)  {board[6]}  |  {board[7]}  |  {board[8]}\n"
+    column_list = f"\n    A   B   C"
+    row1 = f"1)  {board[0]} | {board[1]} | {board[2]}"
+    row2 = f"2)  {board[3]} | {board[4]} | {board[5]}"
+    row3 = f"3)  {board[6]} | {board[7]} | {board[8]}\n"
+    row4 = f"   -----------"
     print(column_list)
     print(row1)
+    print(row4)
     print(row2)
+    print(row4)
     print(row3)
 
 
@@ -53,7 +57,6 @@ def print_winner(winner, move_count):
 def get_move():
     player_input_col = input("Please enter a column: ")
     player_input_row = input("Please enter a row: ")
-    # if player_input_col != "a" or player_input_col != "b":
     if player_input_col == "a":
         if player_input_row == "1":
             player_move = int(player_input_row) - 1
